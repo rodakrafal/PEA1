@@ -1,22 +1,27 @@
 # PEA1
 
-## Project writen in C++ 
+## Project written as a part of PEA classes - effective design of algorithms
 
-It's very easy to make some words **bold** and other words *italic* with Markdown. You can even [link to the given task](http://jaroslaw.mierzwa.staff.iiar.pwr.wroc.pl/pea-lab/pea_proj1_jm_2021_v1.pdf)
+The main premise of the project is to get familiar with the traveling salesman problem. We had to write, implement and analyze the efficiency of three algorithms:
+- Branch and bound
+- Brute force
+- Dynamic programming
 
-Alternatively,
-
-- Dashes work just as well
-- And if you have sub points, put two spaces before the dash or star:
-
-But I have to admit, tasks lists are my favorite:
-
-- [x] This is a complete item
-- [ ] This is an incomplete item
-
-ang. brute force, dynamic programming, branch and bound 
+The exact task can be found here [unfortunately it is written entirely in polish](http://jaroslaw.mierzwa.staff.iiar.pwr.wroc.pl/pea-lab/pea_proj1_jm_2021_v1.pdf)
 
 
-If you want to embed images, this is how you do it:
+## Complition of the algorithms 
 
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+- [ ] Branch and bound
+- [ ] Brute force
+- [ ] Dynamic programming
+
+
+### Used literature 
+
+1. D.E. Goldberg, Algorytmy genetyczne i ich zastosowania, Warszawa, WNT 1998.
+2. Z Michalewicz, Algorytmy genetyczne + struktury danych = programy ewolucyjne,Warszawa,
+WNT 1996.
+3. Z. Michalewicz, D.B. Fogel, Jak to rozwiązać, czyli nowoczesna heurystyka, WNT 2006.
+4. V. Cerny, A thermodynamical approach to the travelling salesman problem: an efficient
+simulation algorithm, Journal of Optimization Theory and Applications, 45: 41-51, 1985.
