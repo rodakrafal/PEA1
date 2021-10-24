@@ -7,7 +7,24 @@ The main premise of the project is to get familiar with the traveling salesman p
 - Brute force
 - Dynamic programming
 
-The exact task can be found here [unfortunately it is written entirely in polish](http://jaroslaw.mierzwa.staff.iiar.pwr.wroc.pl/pea-lab/pea_proj1_jm_2021_v1.pdf)
+The exact task can be found here [unfortunately it is written entirely in polish :speak_no_evil:](http://jaroslaw.mierzwa.staff.iiar.pwr.wroc.pl/pea-lab/pea_proj1_jm_2021_v1.pdf)
+
+
+## Table of contents
+
+* [Details](#Details)
+* [Algoriths](#Complition_of_the_algorithms)
+* [Literature](#Used_literature)
+
+
+## Details
+
+Project was written on linux (WLS Ubntu version 20.04). To run this project, download it locally and execute it. Additonaly you can run this project using valgrind.
+
+Used Tech | Quick description
+------------ | -------------
+Valgrind | checks leaks
+STl | already created structures
 
 
 ## Complition of the algorithms 
