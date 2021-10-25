@@ -21,6 +21,13 @@ The exact task can be found here [unfortunately it is written entirely in polish
 
 Project was written on linux (WLS Ubntu version 20.04). To run this project, download it locally and execute it. Additonaly you can run this project using valgrind.
 
+Additonaly you can run this project using Makefile comments or valgrim commends like:
+
+```
+$ valgrind --track-origins=yes ./main
+$ valgrind --leak-check=full ./main
+```
+
 Used Tech | Quick description
 ------------ | -------------
 Valgrind | checks leaks

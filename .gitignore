@@ -33,4 +33,5 @@
 
 # Local files
 tasks.json
-test
+settings.json
+main
