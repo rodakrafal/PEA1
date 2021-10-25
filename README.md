@@ -49,3 +49,8 @@ WNT 1996.
 3. Z. Michalewicz, D.B. Fogel, Jak to rozwiązać, czyli nowoczesna heurystyka, WNT 2006.
 4. V. Cerny, A thermodynamical approach to the travelling salesman problem: an efficient
 simulation algorithm, Journal of Optimization Theory and Applications, 45: 41-51, 1985.
+
+
+(c) Rafał Rodak
+
+Licensed under the [MIT License](LICENSE)
