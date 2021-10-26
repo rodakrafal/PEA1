@@ -1,6 +1,7 @@
 #include <iostream>
 #include <limits>
 #include "Graph.hpp"
+#include "BrutForce.hpp"
 
 using namespace std;
 
@@ -31,6 +32,7 @@ void menuBruteForce(){
 	char option;
     string name;
     Graph graph (false, 0);
+    BrutForce bForce;
 	do {
         displayBrutForce();
 		cin >> option;
@@ -66,7 +68,7 @@ void menuBruteForce(){
 				cout << ("No adjacency matrix was created.\n");
 				break;
 			}
-            // brute force algorithm
+            bForce.brutForce(graph);
             break;
 		default:
 			cout << "Wrong option chosen.\n";
