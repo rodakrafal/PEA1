@@ -1,19 +1,20 @@
 #include <iostream>
 #include <limits>
 #include "Graph.hpp"
-#include "BrutForce.hpp"
+#include "BruteForce.hpp"
 #include "BruteForceStl.hpp"
 
 using namespace std;
 
-void displayBrutForce()
+void displayBruteForce()
 {
     // system("clear");
     cout << "================= BRUTE FORCE =================" << endl;
 	cout << "\t   1. Load from file" << endl;
     cout << "\t   2. Generate adjacency matrix" << endl;
     cout << "\t   3. Display adjacency matrix" << endl;
-    cout << "\t   4. Execute algorithm" << endl;
+    cout << "\t   4. Execute algorithm without Algorithms" << endl;
+	cout << "\t   5. Execute algorithm wuth Algorithms" << endl;
 	cout << "\t   0. Back to the main menu" << endl<<endl;
 	cout << "Chosen option: ";
 }
@@ -33,9 +34,11 @@ void menuBruteForce(){
 	char option;
     string name;
     Graph graph (false, 0);
-    BruteForceStl bForce;
+    BruteForceStl bForceSTL;
+	BruteForce bForce;
+
 	do {
-        displayBrutForce();
+        displayBruteForce();
 		cin >> option;
 
 		cout << endl;
@@ -64,12 +67,19 @@ void menuBruteForce(){
 			}
             graph.printGraphMatrix();
             break;
-        case '4':
+         case '4':
 			if(graph.getVertices() <=1){
 				cout << ("No adjacency matrix was created.\n");
 				break;
 			}
-            bForce.bruteForceStl(graph);
+            bForce.bruteForce(graph);
+            break;
+		case '5':
+			if(graph.getVertices() <=1){
+				cout << ("No adjacency matrix was created.\n");
+				break;
+			}
+            bForceSTL.bruteForceStl(graph);
             break;
 		default:
 			cout << "Wrong option chosen.\n";
