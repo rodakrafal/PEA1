@@ -33,6 +33,7 @@ Used Tech | Quick description
 ------------ | -------------
 Valgrind | checks leaks
 STl | already created structures
+CMake Tools| for automatization 
 
 
 ## Complition of the algorithms 
