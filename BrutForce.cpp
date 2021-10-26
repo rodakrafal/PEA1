@@ -23,7 +23,7 @@ void BrutForce::brutForce(Graph &graph){ // main function responsible for the al
     int minPath = numeric_limits<int>::max(); // set minimal path to max int size
     permutation(tab, 0, graph.getVertices()-2, graph, minPath,tabTemp); // premutate - main logic
     { // visual output of the Brute Force algorithm
-        cout <<  minPath << endl; // lower 
+        cout <<  minPath << endl; // the lowest path weight
         cout << graph.getFirstVertice() << " ";
         for (int i = 0; i < graph.getVertices()-1; i++){
             cout << tabTemp [i] << " ";

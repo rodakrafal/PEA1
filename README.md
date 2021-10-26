@@ -24,8 +24,9 @@ Project was written on linux (WLS Ubntu version 20.04). To run this project, dow
 Additonaly you can run this project using Makefile comments or valgrim commends like:
 
 ```
-$ valgrind --track-origins=yes ./main
-$ valgrind --leak-check=full ./main
+$ make run 
+$ make valgrind 
+$ makevalgrind 
 ```
 
 Used Tech | Quick description
