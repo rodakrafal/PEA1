@@ -38,8 +38,9 @@ CMake Tools| for automatization
 
 ## Complition of the algorithms 
 
+- [X] Brute force without external libraries
+- [X] Brute force
 - [ ] Branch and bound
-- [ ] Brute force
 - [ ] Dynamic programming
 
 
