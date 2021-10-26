@@ -4,10 +4,6 @@
 
 using namespace std;
 
-BrutForce::BrutForce(){};
-
-BrutForce::~BrutForce(){};
-
 void BrutForce::brutForce(Graph &graph){ // main function responsible for the algorithm
 
     int *tab = new int [graph.getVertices()-1]; // creating temporary array of vertices

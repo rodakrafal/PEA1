@@ -32,7 +32,7 @@
 *.app
 
 # Local files
-tasks.json
-settings.json
-c_cpp_properties.json
+.vscode
+build
+cmakeQuickStart
 main
