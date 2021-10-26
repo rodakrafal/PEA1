@@ -1,10 +1,10 @@
-#include "BrutForce.hpp"
+#include "BruteForce.hpp"
 #include <iostream>
 #include <limits>
 
 using namespace std;
 
-void BrutForce::brutForce(Graph &graph){ // main function responsible for the algorithm
+void BruteForce::bruteForce(Graph &graph){ // main function responsible for the algorithm
 
     int *tab = new int [graph.getVertices()-1]; // creating temporary array of vertices
     int *tabTemp = new int [graph.getVertices()-1]; // creating temporary array of vertices with the best path
@@ -30,7 +30,7 @@ void BrutForce::brutForce(Graph &graph){ // main function responsible for the al
     delete [] tabTemp;
 }
 
-void BrutForce::permutation(int *arr, int start, int end, Graph &graph, int &minPath, int *tabTemp){ 
+void BruteForce::permutation(int *arr, int start, int end, Graph &graph, int &minPath, int *tabTemp){ 
     if(start==end){
         int current_weight = 0; // set current path weight to 0
         int current_vert = graph.getFirstVertice(); // set the first vertice 
@@ -55,7 +55,7 @@ void BrutForce::permutation(int *arr, int start, int end, Graph &graph, int &min
     }
 }
 
-void BrutForce::swap(int &a, int &b){ // simple swap method
+void BruteForce::swap(int &a, int &b){ // simple swap method
     int temp;
     temp = a;
     a = b;
