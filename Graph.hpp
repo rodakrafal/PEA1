@@ -54,7 +54,6 @@ class Graph
     void createTable (int x);  // tworzenie tabeli 2D zawierającej (reprezentującej) graf nieskierowany - macierz sąsiedztwa
 
     int getTableValue(int x, int y);
-    int getListValue(int x, int y);
 
     void setFirstVertice(int x);  // setter oraz getter dla pierwszego wierzchołka
     int getFirstVertice();

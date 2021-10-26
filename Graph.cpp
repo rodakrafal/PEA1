@@ -31,11 +31,10 @@ void Graph::destruct(){ // "wnętrze" destruktora
 
 void Graph::createTable(int V){ // tworzenie tablicy dwu wymiarowej zawierajacej połączenia między wierzchołkami 
     if(V <= 1){
-        cout << "Podano za małą ilość krawędzi do stworzenia tablicy."<<endl;
+        cout << "To little nodes were given."<<endl;
         return;
     }
 
-    // tableList = new vector<pair<int,int>> [V];
     tableMatrix = new int * [V];
     for (int i = 0; i <V; ++i){
         tableMatrix[i] = new int [V];
@@ -82,10 +81,11 @@ bool Graph::checkIfNegativ(){ // getter dla ilości krawędzi
 
 void Graph::addEdge(int x, int y, int weight){   // dodawanie połączeń między wierzchołkami
     
+    if (x==y) weight = numeric_limits<int>::max();
     tableMatrix[x][y] = weight;   // dla grafu skierowanego
-    if(!isDirected){    //dla grafu nieskierowanego
-        tableMatrix[y][x] = weight;
-    }
+    // if(!isDirected){    //dla grafu nieskierowanego
+    //     tableMatrix[y][x] = weight;
+    // }
 }
 
 void Graph::printGraphMatrix(){ // funckja wyświetlająca graficzną reprezentacje grafu
@@ -125,53 +125,28 @@ void Graph::readFromFile(string filename){ // wczytywanie grafu z pliku
 	int first,last,w;
 	if (file.is_open())
 	{
-		file >> edges;
-		if (edges < 0) {
-			cout << "Podana w pliku ilość krawędzi jest nieodpowiednia" << endl;
-			return;
-		}
         file >> vertices;
 		if (vertices <= 0) {
-			cout << "Podana w pliku ilość wierzchołków jest nieodpowiednia" << endl;
-			return;
-		}
-        createTable(vertices);
-
-        file >> first_vertice;
-        	if (first_vertice < 0) {
-			cout << "Podana w pliku pierwszy wierzchołek jest nieodpowiedni" << endl;
-			return;
-		}
-        // cout << first_vertice << endl;
-        file >> last_vertice;
-        	if (last_vertice < 0) {
-			cout << "Podana w pliku ostatni wierzchołek jest nieodpowiedni" << endl;
+			cout << "Not enough vertices were given" << endl;
 			return;
 		}
         cout << endl;
 		if (file.fail())
 			cout << "File error - READ SIZE" << endl;
 		else {
+            createTable(vertices);
             cout << "Graf o " << vertices<< " krawędziach, wczytany z pliku."<< endl<<endl;
-            for (int x = 0; x<edges;x++)
+            for (int x = 0; x<vertices;x++)
             {
-                file >> first;
-                if(first >= vertices){
-                    cout << "Błedna wartość pierwszego wierzchołka " << endl;
-                    return;
-                }
-                file >> last;
-                 if(last >= vertices){
-                    cout << "Błędna wartość drugiego wierzchołka" << endl;
-                    return;
-                }
-                file >>w;
-                if(w<0){
-                    wrong = true;
-                }
-                addEdge(first,last,w);
-                // cout << first << " " << last << " " << w  << endl;
+               for (int y = 0; y < vertices;y++){
+                    file >> w;
+                    if(w<0){
+                        wrong = true;
+                    }
+                    addEdge(x,y,w);
+               }
             }
+            setFirstVertice(0);
 		}
 		file.close();
 	}
