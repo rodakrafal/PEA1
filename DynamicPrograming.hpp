@@ -16,7 +16,7 @@ struct pair_hash
 
 class DynamicPrograming{
     private:
-    std::vector<int> combinations(int end, int r);
+    std::vector<std::vector<int>> combinations(int start,int end, int r);
     std::unordered_map<pairKey,int,pair_hash> umap; // basically a hash map
     public: 
     void heldKarp(Graph &graph); // main metod
