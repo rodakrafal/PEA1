@@ -3,11 +3,6 @@
 #include "Graph.hpp"
 #include <unordered_map>
 
-struct mapInfo{ // details that are stored in the hash map
-    int weight;
-    int penultimateVerticie ;
-};
-
 typedef std::pair<int,int> pairKey;
 
 struct pair_hash
@@ -21,7 +16,8 @@ struct pair_hash
 
 class DynamicPrograming{
     private:
-    std::unordered_map<pairKey,mapInfo,pair_hash> umap; // basically a hash map
+    std::vector<int> combinations(int end, int r);
+    std::unordered_map<pairKey,int,pair_hash> umap; // basically a hash map
     public: 
     void heldKarp(Graph &graph); // main metod
 };

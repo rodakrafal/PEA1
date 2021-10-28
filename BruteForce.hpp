@@ -1,6 +1,5 @@
 #ifndef BRUTEFORCE_HPP
 #define BRUTEFORCE_HPP
-#include <string>
 
 #include "Graph.hpp"
 
