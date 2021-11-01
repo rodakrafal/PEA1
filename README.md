@@ -26,7 +26,7 @@ Additonaly you can run this project using Makefile comments or valgrim commends 
 ```
 $ make run 
 $ make valgrind 
-$ makevalgrind 
+$ make valgrindleak
 ```
 
 Used Tech | Quick description
