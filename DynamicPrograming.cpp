@@ -1,99 +1,81 @@
 #include "DynamicPrograming.hpp"
 #include <iostream>
-#include <limits>
+#include <limits.h>
 #include <algorithm>
 
 using namespace std;
 
 void DynamicPrograming::heldKarp(Graph &graph){
-    // mapInfo mapInfo = {1,23};
-    // pair<int,int> key = {9,2};
-    // umap.insert({key,mapInfo});
 
-    // auto search = this->umap.find(key);
-    // if (search != umap.end()) {
-    //     cout << "Found " << to_string(search->first.first) + " " + to_string(search->first.second)  + " " << search->second.weight << " " << search->second.penultimateVerticie <<'\n';
-    // } else {
-    //     cout << "Not found\n";
-    // }
-    int n = graph.getVertices();
+	// because we are searching for Hamilton cycle, starting vertex does not matter, it is easier to set it to the last one
+    int firstVertice = graph.getVertices()-1;
+    // number of vertices except the first one 
+    int amoutOfVertecies = firstVertice;
+    // binary shift giving the amount of vertices in the path
+    int path  = (1 << amoutOfVertecies)-1;
 
-    string key;
-    pair<double, int> value, best;
-    int bits, previous;
-
-    for(int i = 0; i < n; ++i){
-        key = to_string(1 << i) + to_string(i);
-        value = make_pair(graph.getTableValue(0,i), 0);
-        matrix_map[key] = value;
+    MapInfo mapInfo;
+	// adding first set of distances
+    for (int i = 0; i < amoutOfVertecies; i++) {
+			umap.insert({{0,i},{graph.getTableValue(firstVertice,i), firstVertice}});
+	}
+    int minPath = INT_MAX;
+	int finalVertex = -1;
+	// main loop with recursion
+    for (int destination = 0; destination < amoutOfVertecies; destination++) {
+		// getting the distance from destination to the starting vertex using recursion, plus the distance from first to destination - closing the path to make hamilton cycle
+		int distance = calculateDistance(graph, amoutOfVertecies,(path & ~(1 << destination)), destination) + graph.getTableValue(destination, firstVertice);
+		// if found a shorter path 
+		if (distance < minPath) {
+			minPath = distance;
+			finalVertex = destination;
+		}
     }
-
-    for(int size = 2; size < n; ++size ){
-        for(auto set : combinations(1, n, size) ){
-            bits = 0;
-            //na 2^0 + 2^4 + 2^5 = 1001
-            for(auto bit: set){
-                bits |= 1 << bit;
-            }
-
-            for(auto first_loop : set){
-                previous = bits & ~(1 << first_loop);
-                best = make_pair(numeric_limits<int>::max(), 0);
-                for(auto second_loop : set){
-                    if(first_loop == second_loop){
-                        continue;
-                    }
-                    key = to_string(previous) + to_string(second_loop);
-                    value = make_pair(matrix_map[key].first + graph.getTableValue(second_loop,first_loop), second_loop);
-                    best = (best.first < value.first) ? best : value;
-                }
-                key = to_string(bits) + to_string(first_loop);
-                matrix_map[key] = best;
-            }
-        }
-    }
-    bits = (1 << n) - 2;
-    best = make_pair(numeric_limits<int>::max(), 0);
-
-    for(int i = 1; i < n; ++i){
-        key = to_string(bits) + to_string(i);
-        value = make_pair(matrix_map[key].first + graph.getTableValue(0,i), i);
-        best = (best.first < value.first) ? best : value;
-    }
-
-    std::vector <int> path(n+1, 0);
-    value = best;
-    for(int i = 1; i < n; ++i){
-        path[i] = value.second;
-        key = to_string(bits) + to_string(path[i]);
-        value = matrix_map[key];
-        bits = bits & ~(1 << path[i]);
-    }
-
-    for(int i = n; i >= 0 ; --i){
-        cout << path[i] << " ";
-    }
-    cout << "\n" << best.first << endl;
-
+	// printing the end values
+	vector <int> result;
+	cout << "Minimal path: " << minPath << endl;
+	path = path & ~(1 << finalVertex);
+	cout << firstVertice<< " " << finalVertex << " ";
+	// result.push_back(firstVertice);
+	result.push_back(finalVertex);
+	while (finalVertex != firstVertice) {
+		auto search = umap.find({path,finalVertex});
+		if (search != umap.end()) {
+			finalVertex = search->second.parent;
+			cout << finalVertex << " ";
+			path = path & ~(1 << finalVertex);
+			result.push_back(finalVertex);
+    	}
+	} 	cout << endl;
+	umap.clear();
 }
 
- vector<vector<int>> DynamicPrograming::combinations(int start, int end, int r){
-        vector<vector<int>> combinations;
+int DynamicPrograming::calculateDistance(Graph &graph, int amoutOfVertecies, int subset, int wantedVertex) { // searching for shortest path 
+	auto search = umap.find({subset,wantedVertex}); // if found the connection, return the weight of the path 
+	if (search != umap.end()) {
+		return search->second.weight;
+	} else { // otherwise add the shortes path to the unordered map
+		int minPath = INT_MAX; // setting minimal path cost as -1
+		int minParent = -1; // setting parent as -1
 
-        int n = end - start;
+		for (int destination = 0; destination < amoutOfVertecies; destination++) { // looping through vertices in the path
+				if ((subset & (1 << destination)) != 0) { // next vertices in the path
+					int nextSubset = (subset & ~(1 << destination)); 
+					int distance = calculateDistance(graph, amoutOfVertecies, nextSubset, destination) + graph.getTableValue(destination, wantedVertex); // distance from destination to the starting vertex using recursion
 
-        vector<bool> vertex(n);
-        fill(vertex.end() - r, vertex.end(), true);
+					// getting shortest path and parent
+					if (distance < minPath) {
+						minPath = distance;
+						minParent = destination;
+					}
+				}
+		}
 
-        do{
-            vector<int> line;
-            for(int i = 0; i < n; ++i){
-                if(vertex[i]){
-                    line.push_back(i+start);
-                }
-            }
-            combinations.push_back(line);
-        }while(next_permutation(vertex.begin(), vertex.end()));
-
-        return combinations;
-    }
+		// adding to the unordered map
+		MapInfo mapInfo;
+		mapInfo.weight = minPath;
+		mapInfo.parent = minParent;
+		umap.insert({{subset,wantedVertex},mapInfo});
+		return minPath;
+	}
+}

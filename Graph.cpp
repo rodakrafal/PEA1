@@ -117,9 +117,8 @@ void Graph::printGraphMatrix(){ // funckja wyświetlająca graficzną reprezenta
 
 
 void Graph::readFromFile(string filename){ // wczytywanie grafu z pliku
-    if(vertices >1 && created && edges>0){
-        destruct();
-    }
+    if(vertices >1) destruct();
+
     ifstream file;
 	file.open(filename);
 	int first,last,w;

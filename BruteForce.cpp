@@ -48,7 +48,7 @@ void BruteForce::permutation(int *arr, int start, int end, Graph &graph, int &mi
         }
         return;
     }
-    for(int i =start;i<=end;i++){ // main logic behind the permutation
+    for(int i = start;i<=end;i++){ // main logic behind the permutation
         swap((arr[i]), (arr[start]));
         permutation(arr, start+1, end, graph, minPath,tabTemp);
         swap((arr[i]), (arr[start]));
