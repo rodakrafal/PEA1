@@ -14,11 +14,15 @@ struct pair_hash
     }
 };
 
+struct MapInfo{
+    int weight;
+    int parent;
+};
+
 class DynamicPrograming{
     private:
-    std::vector<std::vector<int>> combinations(int start,int end, int r);
-    std::unordered_map<pairKey,int,pair_hash> umap; // basically a hash map
-    std::unordered_map<std::string, std::pair<double, int>> matrix_map;
+    int solveSubproblem(Graph &graph, int x, int y, int z);
+    std::unordered_map<pairKey,MapInfo,pair_hash> umap; // basically a hash map
 
     public: 
     void heldKarp(Graph &graph); // main metod

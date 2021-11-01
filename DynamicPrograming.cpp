@@ -1,99 +1,65 @@
 #include "DynamicPrograming.hpp"
 #include <iostream>
-#include <limits>
+#include <limits.h>
 #include <algorithm>
 
 using namespace std;
 
 void DynamicPrograming::heldKarp(Graph &graph){
-    // mapInfo mapInfo = {1,23};
-    // pair<int,int> key = {9,2};
-    // umap.insert({key,mapInfo});
 
-    // auto search = this->umap.find(key);
-    // if (search != umap.end()) {
-    //     cout << "Found " << to_string(search->first.first) + " " + to_string(search->first.second)  + " " << search->second.weight << " " << search->second.penultimateVerticie <<'\n';
-    // } else {
-    //     cout << "Not found\n";
-    // }
-    int n = graph.getVertices();
+    int firstVertice = graph.getVertices()-1;
+    // number of vertices except the first one 
+    int numberOfMidpathCities = graph.getVertices()-1;
+    // binary shift giving the total number of vertices in the path
+    int numberOfSubsets = 1 << numberOfMidpathCities;
+    int allMidpathCities  = (1 << numberOfMidpathCities)-1;
 
-    string key;
-    pair<double, int> value, best;
-    int bits, previous;
+    MapInfo mapInfo;
+    pair<int,int> key;
+    for (int i = 0; i < numberOfMidpathCities; i++) {
+			mapInfo.parent = firstVertice;
+			mapInfo.weight = graph.getTableValue(firstVertice,i);
+			umap.insert({{0,i},mapInfo});
+	}
+    int minPath = INT_MAX;
+    int minLastVertice = -1;
 
-    for(int i = 0; i < n; ++i){
-        key = to_string(1 << i) + to_string(i);
-        value = make_pair(graph.getTableValue(0,i), 0);
-        matrix_map[key] = value;
+    for (int finalCity = 0; finalCity < numberOfMidpathCities; finalCity++) {
+			int distance = solveSubproblem(graph, numberOfMidpathCities,(allMidpathCities & ~(1 << finalCity)), finalCity) + graph.getTableValue(finalCity, firstVertice);
+
+			if (distance < minPath) {
+				minPath = distance;
+				minLastVertice = finalCity;
+			}
     }
 
-    for(int size = 2; size < n; ++size ){
-        for(auto set : combinations(1, n, size) ){
-            bits = 0;
-            //na 2^0 + 2^4 + 2^5 = 1001
-            for(auto bit: set){
-                bits |= 1 << bit;
-            }
-
-            for(auto first_loop : set){
-                previous = bits & ~(1 << first_loop);
-                best = make_pair(numeric_limits<int>::max(), 0);
-                for(auto second_loop : set){
-                    if(first_loop == second_loop){
-                        continue;
-                    }
-                    key = to_string(previous) + to_string(second_loop);
-                    value = make_pair(matrix_map[key].first + graph.getTableValue(second_loop,first_loop), second_loop);
-                    best = (best.first < value.first) ? best : value;
-                }
-                key = to_string(bits) + to_string(first_loop);
-                matrix_map[key] = best;
-            }
-        }
-    }
-    bits = (1 << n) - 2;
-    best = make_pair(numeric_limits<int>::max(), 0);
-
-    for(int i = 1; i < n; ++i){
-        key = to_string(bits) + to_string(i);
-        value = make_pair(matrix_map[key].first + graph.getTableValue(0,i), i);
-        best = (best.first < value.first) ? best : value;
-    }
-
-    std::vector <int> path(n+1, 0);
-    value = best;
-    for(int i = 1; i < n; ++i){
-        path[i] = value.second;
-        key = to_string(bits) + to_string(path[i]);
-        value = matrix_map[key];
-        bits = bits & ~(1 << path[i]);
-    }
-
-    for(int i = n; i >= 0 ; --i){
-        cout << path[i] << " ";
-    }
-    cout << "\n" << best.first << endl;
-
+	cout << "sciezka minimalna waga: " << minPath << endl;
 }
 
- vector<vector<int>> DynamicPrograming::combinations(int start, int end, int r){
-        vector<vector<int>> combinations;
+int DynamicPrograming::solveSubproblem(Graph &graph, int numberOfMidpathCities, int subset, int destCity) {
+	auto search = umap.find({subset,destCity});
+	if (search != umap.end()) {
+		return search->second.weight;
+	} else {
+		int minDistance = INT_MAX;
+		int minParent = -1;
 
-        int n = end - start;
+		for (int preDestCity = 0; preDestCity < numberOfMidpathCities; preDestCity++) {
+				if ((subset & (1 << preDestCity)) != 0) {
+					int subsetWithoutPreDestCity = (subset & ~(1 << preDestCity));
+					int distance = solveSubproblem(graph, numberOfMidpathCities, subsetWithoutPreDestCity, preDestCity) + graph.getTableValue(preDestCity, destCity);
 
-        vector<bool> vertex(n);
-        fill(vertex.end() - r, vertex.end(), true);
+					if (distance < minDistance) {
+						minDistance = distance;
+						minParent = preDestCity;
+					}
+				}
+		}
 
-        do{
-            vector<int> line;
-            for(int i = 0; i < n; ++i){
-                if(vertex[i]){
-                    line.push_back(i+start);
-                }
-            }
-            combinations.push_back(line);
-        }while(next_permutation(vertex.begin(), vertex.end()));
-
-        return combinations;
-    }
+		MapInfo mapInfo;
+		mapInfo.weight = minDistance;
+		mapInfo.parent = minParent;
+		umap.insert({{subset,destCity},mapInfo});
+		return minDistance;
+	}
+}
