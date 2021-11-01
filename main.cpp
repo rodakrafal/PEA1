@@ -47,7 +47,7 @@ void menuBruteForce(){
 	bool quit = false;
 	char option;
     string name;
-    Graph graph (false, 0);
+    Graph graph;
     BruteForceStl bForceSTL;
 	BruteForce bForce;
 
@@ -66,13 +66,10 @@ void menuBruteForce(){
             graph.readFromFile(name);
 			break;
 		case '2':
-			float x;
-			int y;
-			cout << "Enter the density from 0.00 to 1.00: ";
-			cin >> x;
+			int x;
 			cout << "Enter amount of nodes: ";
-			cin >> y;
-			graph.generateGraph(x,y);
+			cin >> x;
+			graph.generateGraph(x);
             break;
         case '3':
         	if(graph.getVertices() <=1){
@@ -107,7 +104,7 @@ void menuDynamicPrograming(){
 	bool quit = false;
 	char option;
     string name;
-    Graph graph (false, 0);
+    Graph graph;
 	DynamicPrograming dProg;
 	do {
         displayDynamicPrograming();
@@ -124,13 +121,10 @@ void menuDynamicPrograming(){
             graph.readFromFile(name);
 			break;
 		case '2':
-			float x;
-			int y;
-			cout << "Enter the density from 0.00 to 1.00: ";
-			cin >> x;
+			int x;
 			cout << "Enter amount of nodes: ";
-			cin >> y;
-			graph.generateGraph(x,y);
+			cin >> x;
+			graph.generateGraph(x);
             break;
         case '3':
         	if(graph.getVertices() <=1){
@@ -140,10 +134,10 @@ void menuDynamicPrograming(){
             graph.printGraphMatrix();
             break;
          case '4':
-			// if(graph.getVertices() <=1){
-			// 	cout << ("No adjacency matrix was created.\n");
-			// 	break;
-			// }
+			if(graph.getVertices() <=1){
+				cout << ("No adjacency matrix was created.\n");
+				break;
+			}
             dProg.heldKarp(graph);
             break;
 		default:

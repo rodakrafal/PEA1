@@ -2,7 +2,7 @@
 #define DYNAMICPROGRAMING_HPP
 #include "Graph.hpp"
 #include <unordered_map>
-
+#include <vector>
 typedef std::pair<int,int> pairKey;
 
 struct pair_hash // key to the unordered map consisted of 2 integers
