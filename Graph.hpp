@@ -19,24 +19,6 @@ public:
     }
 };
 
-// class Compare2
-// {
-// public:
-//     bool operator() (Edge e1, Edge e2)
-//     {
-//         return e1.weight < e2.weight;
-//     }
-// };
-
-// class Node{
-// public:
-//     int index;
-//     int weight;
-//     Node *next;
-//     Node();
-// };
-
-
 class Graph
 {
 
