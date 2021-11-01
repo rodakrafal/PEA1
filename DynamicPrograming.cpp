@@ -17,12 +17,10 @@ void DynamicPrograming::heldKarp(Graph &graph){
     MapInfo mapInfo;
 	// adding first set of distances
     for (int i = 0; i < amoutOfVertecies; i++) {
-			mapInfo.parent = firstVertice;
-			mapInfo.weight = graph.getTableValue(firstVertice,i);
-			umap.insert({{0,i},mapInfo});
+			umap.insert({{0,i},{graph.getTableValue(firstVertice,i), firstVertice}});
 	}
     int minPath = INT_MAX;
-	
+	int finalVertex = -1;
 	// main loop with recursion
     for (int destination = 0; destination < amoutOfVertecies; destination++) {
 		// getting the distance from destination to the starting vertex using recursion, plus the distance from first to destination - closing the path to make hamilton cycle
@@ -30,10 +28,25 @@ void DynamicPrograming::heldKarp(Graph &graph){
 		// if found a shorter path 
 		if (distance < minPath) {
 			minPath = distance;
+			finalVertex = destination;
 		}
     }
+	// printing the end values
+	cout << "Minimal path: " << minPath << endl;
+	path = path & ~(1 << finalVertex);
+	cout << firstVertice<< " " << finalVertex << " ";
+	while (finalVertex != firstVertice) {
+		auto search = umap.find({path,finalVertex});
+		if (search != umap.end()) {
+			finalVertex = search->second.parent;
+			cout << finalVertex << " ";
+			path = path & ~(1 << finalVertex);
+    	}
+	} 	cout << endl;
 
-	cout << "sciezka minimalna waga: " << minPath << endl;
+
+	umap.clear();
+
 }
 
 int DynamicPrograming::calculateDistance(Graph &graph, int amoutOfVertecies, int subset, int wantedVertex) { // searching for shortest path 
