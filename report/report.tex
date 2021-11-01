@@ -1,0 +1,192 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{polski}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{pseudocode}
+
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+
+
+\begin{document}
+\begin{titlepage}
+    \newgeometry{top=5.5cm, bottom=3cm}
+    
+    \centering
+    {\huge\bfseries PEA\par}
+    
+    \vspace{0.9cm}
+    Pierwszy projekt z Projektowania Efektywnych Algorytmów
+    \vspace{1cm}
+    {\Large \bfseries \\Implementacja i analiza efektywności algorytmu B\&B oraz programowania dynamicznego\par}
+    \vspace{3cm}
+    {\large\bfseries Rafał Rodak 252788\par}
+    \vspace{0.15cm}
+
+    \vfill
+
+    \includegraphics[width=0.8\textwidth]{logo.png}
+    \vspace{1.2cm}
+    \\Prowadzący: Dr inż. Jarosław Mierzwa \\
+    Termin: pt. 11:15
+
+
+    \vspace{1cm}
+    \today \\ \LaTeX
+    
+    \restoregeometry
+\end{titlepage}
+
+\tableofcontents
+\pagebreak
+ 
+\section{Wstęp}
+\subsection{Opis zadania}
+
+Zadanie polega na zaimplementowaniu oraz dokonaniu analizy efektywności algorytmu 
+przeglądu zupełnego, podziału i ograniczeń (B\&B) oraz programowania dynamicznego 
+(DP) dla asymetrycznego problemu komiwojażera (ATSP).\\
+
+Problem komiwojażera \footnote{https://en.wikipedia.org/wiki/Travelling\_salesman\_problem} 
+jest to zagadnienie optymalizacyjne polegające na znalezieniu minimalnego cyklu 
+Hamiltona \footnote{https://en.wikipedia.org/wiki/Hamiltonian\_path} w pełnym grafie 
+ważonym (pełny graf ważony to taki, w którym wszystkie krawędzi są ze sobą połączone 
+i posiadają etykiety liczbowe przy krawędziach, które wyrażają wagę). Cykl Hamiltona 
+jest to taki cykl w grafie, w którym każdy wierzchołek grafu został odwiedzony 
+dokładnie raz w wyłączeniem pierwszego wierzchołka. \\
+
+Dodatkowo do projektu utworzone zostało repozytorium na platformie GitHub zawierające
+wszystkie pliki źródłowe wraz z komentarzami, sprawozdanie oraz pliki przeznaczone do 
+testowania napisanych algorytmów, https://github.com/rodakrafal/PEA1
+\subsection{Założenia}
+Podczas realizacji zadania należy przyjąć następujące założenia:
+\begin{itemize}
+    \item[$-$] używane struktury danych są alokowane dynamicznie (w zależności od aktualnego
+    rozmiaru problemu),
+    \item[$-$] program umożliwia weryfikację poprawności działania algorytmu. W tym celu
+    istnieć możliwość wczytania danych wejściowych z pliku tekstowego,
+    \item[$-$] po zaimplementowaniu i sprawdzeniu poprawności działania algorytmu dokonano
+    pomiaru czasu jego działania w zależności od rozmiaru problemu N,
+    \item[$-$] dla każdej wartości N należy wygenerowano po co najmniej 100 losowych instancji 
+    problemu (w sprawozdaniu należy umieścić tylko wyniki uśrednione – pamiętać, aby nie mierzyć czasu
+    generowania instancji),
+    \item[$-$] implementacja algorytmów została dokonana zgodnie z obiektowym paradygmatem
+    programowania, 
+    \item[$-$] program napisany został w wersji okienkowej, obiektowo,
+    \item[$-$] kod źródłowy powinien jest komentowany,
+    \item[$-$] algorytmy napisanę są w języku C++,
+    \item[$-$] testy stworzonych algorytmów przeprowadzone zostały na wersji RELEASE,
+    \item[$-$] istnieje możliwość ostatnio wczytanych oraz wygenerowanych danych oraz wygenerowania.
+      
+
+\end{itemize}
+\vfill
+\section{Teoria}
+\subsection{Brute Force}
+Metoda przeglądu zupełnego \footnote{https://en.wikipedia.org/wiki/Brute\-force\_search}, tzw. przeszukiwanie wyczerpujące (eng. Exhaustive serach) bądź
+metoda siłowa (eng. Brute force), polega na znalezieniu wszystkich potencjalnych rozwiązań problemu 
+oraz ich analizie w celu wybrania tego, które spełnia warunki zadania. Metodę tę stosuje się do 
+rozwiązywania problemów, dla których znalezienie rozwiązania za pomocą innych dokładnych metod 
+jest niemożliwe lub zbyt trudne. Główną wadą metody Brute Force jest to, że w przypadku wielu rzeczywistych problemów
+liczba naturalnych kandydatów jest zbyt duża.
+
+\begin{center}
+    \begin{pseudocode}[ruled]{Brute Force}{P, c}
+        
+        c\GETS first(P)\\
+        \WHILE c \not= \wedge
+        \DO 
+        \BEGIN
+        \IF valid(P,c) \STMTNUM{1in}{st.1}\THEN output(P,c) \STMTNUM{1in}{st.2}
+        \\c\GETS next(P,c) 
+        \END
+    \end{pseudocode}
+\end{center}
+
+Brute Force oblicza i porównuje wszystkie możliwe premutacje tras w celu określenia 
+najkrótszej ścieżki. Aby rozwiązać problem TSP przy użyciu tej metody, należy obliczyć 
+całkowitą liczbę tras, a następnie wyznaczyć długości każdej z nich wybierając za każdym razem
+najkrótszą. Złożoność obliczeniowa algorytmu w przypadku problemu TSP przyjmuje postać wykładniczą
+$O(n!) $.
+\newline
+
+Przykład działania algorytmu można opisać w oparciu podany powyżej pseudocode.
+W pętli while oblicznane będą kolejne permutacje ściężki (\ref{st.1}), aż do momentu 
+wyczerpania się możliwych połączeń. W przypadku znalezienia krótszej ścieżki będzie ona
+zapamiętana (\ref{st.2}).
+
+\subsection{Branch-N-Bound}
+\subsection{Dynamic Programing}
+Metoda ta określa ogólne podejście polegające na przekształceniu zadania 
+optymalizacyjnego w wieloetapowy proces decyzyjny, w którym stan na każdym
+etapie zależy od decyzji wybieranej ze zbioru decyzji dopuszczalnych.
+
+\begin{center}
+    \begin{pseudocode}[ruled]{Dynamic Programing}{G, n}
+        \FOR k :=  2 \TO n \DO
+        \BEGIN
+        C(\{k\},k) := d_{1,k}\\
+        \END\\
+        \FOR s := 2 \TO n-1 \DO
+        \BEGIN
+        \FOR \forall \ S \in \{2,...,n\}, |S| = s \DO
+        \BEGIN
+        \FOR \forall \ k \in S \DO
+        C(S,k) := min_{m \not= k,m\in S}
+        \END
+        \END
+        \\\\opt := min_{k\not=1} [C(\{2,3,...,n\},k)+d_{k,1}]\\
+        \RETURN{opt}
+    \end{pseudocode} 
+\end{center}
+
+Metoda rozwiązywania problemów optymalizacyjnych dekomponowalnych rekurencyjnie 
+na podproblemy.
+\begin{enumerate}
+    \item Scharakteryzowanie struktury rozwiązania optymalnego
+    \item Zdefiniowanie kosztu rozwiązania optymalnego jako funkcji optymalnych 
+    rozwiązań podproblemów (układ równań rekurencyjnych)
+    \item Wyliczenie optymalnego kosztu metodą bottom-up 
+    (rozwiązywanie podproblemów od najmniejszego na największego)
+    \item Skonstruowanie rozwiązania optymalnego (na podstawie wykonanych obliczeń)
+    - można pominąć ten krok jeżeli interesuje nas tylko koszt rozwiązania
+    optymalnego a nie jego osiągnięcie
+\end{enumerate}
+
+Algorytm Helda - Karpa \footnote{https://en.wikipedia.org/wiki/Held\%E2\%80\%93Karp\_algorithm}, zwany również algorytmem Helda - Bellmana - Karpa
+jest algorytmem służący do rozwiązywania problemu TSP. Jest on algorytmem dokładnym
+opartym na programowaniu dynamicznym. Ma on złożoność czasową $O(n^22n)$ oraz 
+złożoność pamięciową równą $O(nn^2)$. Jest to co prawda złożoność gorsza od wielomianowej, 
+ale algorytm ten jest znacznie lepszy od algorytmu naiwnego sprawdzającego wszystkie warianty
+takiego jak Brute Force.
+
+
+Działanie algorytmu: załóżmy, że mamy graf liczący n wierzchołków ponumerowanych 
+1, 2, …, n. Wierzchołek 1 niech będzie wierzchołkiem początkowym. Jako $d_{i,j}$
+oznaczmy odległość między wierzchołkami i oraz j (są to dane wejściowe). 
+Oznaczmy jako D(S, p) optymalną długość ścieżki wychodzącej z punktu 1 i 
+przechodzącej przez wszystkie punkty zbioru S tak, aby zakończyć się w punkcie p 
+(p musi należeć do S). Przykładowo, zapis D({2, 5, 6}, 5) to optymalna długość 
+ścieżki wychodzącej z punktu 1, przechodzącej przez punkty 2 i 6, kończącej się w 
+punkcie 5. Liczbę punktów w zbiorze S oznaczmy jako s. Tym co odróżnia metrodę programowania
+dynamicznego od metody przeglądu zupełnego jest to, że nie musimy wyliczać odległości
+poszczególnych wierzchołków, a jedynie skorzystać z wcześniej policzonych wyników. 
+W przeglądzie zupełnym każdą drogę liczymy od nowa, nie wykorzystując wcześniejszych 
+wyliczeń, co jest tratą czasu, której unikamy w metodzie programowania dynamicznego.
+
+\section{Pomiary}
+Do sprawdzenia poprawności działania algorytmu, wybrano następujący zostaw instancji:
+\begin{itemize}
+    \item[$*$] http://jaroslaw.mierzwa.staff.iiar.pwr.wroc.pl/pea-stud/tsp/
+\end{itemize}
+\end{document}
