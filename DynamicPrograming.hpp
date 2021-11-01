@@ -21,7 +21,7 @@ struct MapInfo{
 
 class DynamicPrograming{
     private:
-    int solveSubproblem(Graph &graph, int x, int y, int z);
+    int calculateDistance(Graph &graph, int x, int y, int z); // recursion method to calculate shortest path
     std::unordered_map<pairKey,MapInfo,pair_hash> umap; // basically a hash map
 
     public: 
