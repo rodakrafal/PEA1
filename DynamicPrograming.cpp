@@ -32,21 +32,22 @@ void DynamicPrograming::heldKarp(Graph &graph){
 		}
     }
 	// printing the end values
+	vector <int> result;
 	cout << "Minimal path: " << minPath << endl;
 	path = path & ~(1 << finalVertex);
 	cout << firstVertice<< " " << finalVertex << " ";
+	// result.push_back(firstVertice);
+	result.push_back(finalVertex);
 	while (finalVertex != firstVertice) {
 		auto search = umap.find({path,finalVertex});
 		if (search != umap.end()) {
 			finalVertex = search->second.parent;
 			cout << finalVertex << " ";
 			path = path & ~(1 << finalVertex);
+			result.push_back(finalVertex);
     	}
 	} 	cout << endl;
-
-
 	umap.clear();
-
 }
 
 int DynamicPrograming::calculateDistance(Graph &graph, int amoutOfVertecies, int subset, int wantedVertex) { // searching for shortest path 
