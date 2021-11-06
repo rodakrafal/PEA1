@@ -7,10 +7,10 @@ run:
 
 valgrind:
 	clear
-	g++ -ggdb -o main main.cpp Graph.cpp BruteForce.cpp BruteForceStl.cpp DynamicPrograming.cpp
+	g++ -ggdb -o main main.cpp src/Graph.cpp src/BruteForce.cpp src/BruteForceStl.cpp src/DynamicPrograming.cpp src/BranchAndBound.cpp
 	valgrind --track-origins=yes ./main
 
 valgrindleak:
 	clear
-	g++ -ggdb -o main main.cpp Graph.cpp BruteForce.cpp BruteForceStl.cpp DynamicPrograming.cpp
+	g++ -ggdb -o main main.cpp src/Graph.cpp src/BruteForce.cpp src/BruteForceStl.cpp src/DynamicPrograming.cpp src/BranchAndBound.cpp
 	valgrind --leak-check=full ./main
