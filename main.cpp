@@ -1,9 +1,9 @@
 #include <iostream>
 #include <limits>
-#include "Graph.hpp"
-#include "BruteForce.hpp"
-#include "BruteForceStl.hpp"
-#include "DynamicPrograming.hpp"
+#include "src/Graph.hpp"
+#include "src/BruteForce.hpp"
+#include "src/BruteForceStl.hpp"
+#include "src/DynamicPrograming.hpp"
 
 
 using namespace std;
