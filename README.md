@@ -40,7 +40,7 @@ CMake Tools| for automatization
 
 - [X] Brute force without external librariesclea
 - [X] Brute force
-- [ ] Branch and bound
+- [X] Branch and bound
 - [X] Dynamic programming
 
 
