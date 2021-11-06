@@ -9,6 +9,7 @@ add_library(src STATIC
     src/BruteForceStl.cpp
     src/DynamicPrograming.cpp
     src/Graph.cpp
+    src/BranchAndBound.cpp
 )
 
 # add_library(files STATIC 
