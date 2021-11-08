@@ -5,7 +5,8 @@
 #include "src/BruteForceStl.hpp"
 #include "src/DynamicPrograming.hpp"
 #include "src/BranchAndBound.hpp"
-
+// #include "matplotlibcpp.h"
+#include "src/Time.cpp"
 
 
 using namespace std;
@@ -97,14 +98,22 @@ void menuBruteForce(){
 				cout << ("No adjacency matrix was created.\n");
 				break;
 			}
+			{
+			Clock clock;
             bForce.bruteForce(graph);
+			int time = clock.StopClock();
+			}
             break;
 		case '5':
 			if(graph.getVertices() <=1){
 				cout << ("No adjacency matrix was created.\n");
 				break;
 			}
+			{
+			Clock clock;
             bForceSTL.bruteForceStl(graph);
+			int time = clock.StopClock();
+			}
             break;
 		default:
 			cout << "Wrong option chosen.\n";
@@ -152,7 +161,11 @@ void menuDynamicPrograming(){
 				cout << ("No adjacency matrix was created.\n");
 				break;
 			}
+			{
+			Clock clock;
             dProg.heldKarp(graph);
+			int time = clock.StopClock();
+			}
             break;
 		default:
 			cout << "Wrong option chosen.\n";
@@ -200,7 +213,11 @@ void menuBnB(){
 				cout << ("No adjacency matrix was created.\n");
 				break;
 			}
+			{
+			Clock clock;
             dBnB.bnb(graph);
+			int time = clock.StopClock();
+			}
             break;
 		default:
 			cout << "Wrong option chosen.\n";

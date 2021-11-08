@@ -10,6 +10,7 @@ add_library(src STATIC
     src/DynamicPrograming.cpp
     src/Graph.cpp
     src/BranchAndBound.cpp
+    src/Time.cpp
 )
 
 # add_library(files STATIC 
